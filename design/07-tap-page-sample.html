@@ -1,0 +1,345 @@
+<title>Tap Page Sample</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+<style>
+/* Layout: sample-controls strip → profile page. Phone: one column (cover, avatar, identity, actions, sections).
+   Desktop ≥ 900px: wide cover banner, then a sticky identity card on the left and content sections on the right. */
+:root{
+  --page:#eceae6; --bg:#ffffff; --fg:#1d1a17; --muted:#6c655e; --line:#e8e3dd; --soft:#f5f2ee;
+  --accent:#3b2418; --accent-ink:#ffffff; --accent-soft:#f1e9e3; --on-soft:var(--accent);
+  --open:#1f7a45; --closed:#a33a2b; --ctrl:#17152a; --ctrl-ink:#ffffff; --tappd:#5b3fd6;
+  --f:"Plus Jakarta Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --page:#0f0e0d; --bg:#1a1816; --fg:#f2eee9; --muted:#aaa198; --line:#2e2a26; --soft:#24211e;
+  --accent-soft:#2c2420; --on-soft:var(--fg); --open:#6fd39a; --closed:#f08c7c; --ctrl:#2a2640; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --page:#0f0e0d; --bg:#1a1816; --fg:#f2eee9; --muted:#aaa198; --line:#2e2a26; --soft:#24211e;
+  --accent-soft:#2c2420; --on-soft:var(--fg); --open:#6fd39a; --closed:#f08c7c; --ctrl:#2a2640; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--page);color:var(--fg);font-family:var(--f);font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:3px solid var(--tappd);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+[hidden]{display:none!important}
+
+/* sample controls */
+.ctrls{background:var(--ctrl);color:var(--ctrl-ink);padding-inline:16px;padding-block:10px}
+.ctrls .in{max-width:1080px;margin:0 auto;display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;font-size:13px}
+.ctrls b.tag{font-weight:700;letter-spacing:.04em;text-transform:uppercase;font-size:11px;background:rgba(255,255,255,.14);padding:3px 8px;border-radius:99px}
+.seg{display:inline-flex;border:1px solid rgba(255,255,255,.3);border-radius:99px;overflow:hidden}
+.seg button{border:0;background:none;color:#fff;padding:5px 12px;cursor:pointer;font-weight:600;font-size:13px}
+.seg button[aria-pressed="true"]{background:#fff;color:#17152a}
+.ctrls label.t{display:inline-flex;gap:6px;align-items:center;cursor:pointer}
+.ctrls .up{position:relative;border:1px solid rgba(255,255,255,.3);border-radius:99px;padding:4px 10px;cursor:pointer;font-weight:600}
+.ctrls .up input{position:absolute;inset:0;opacity:0;cursor:pointer}
+.ctrls .up:focus-within{outline:2px solid #fff}
+.sw{width:22px;height:22px;border-radius:50%;border:2px solid rgba(255,255,255,.35);cursor:pointer;padding:0}
+.sw[aria-pressed="true"]{border-color:#fff;box-shadow:0 0 0 2px var(--ctrl),0 0 0 4px #fff}
+.grow{flex:1}
+
+/* page shell */
+.page{max-width:460px;margin:0 auto;background:var(--bg);min-height:100vh;box-shadow:0 0 0 1px var(--line)}
+@media (min-width:500px) and (max-width:899px){.page{margin-block:24px;min-height:0;border-radius:28px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.12),0 0 0 1px var(--line)}}
+.cover{height:170px;position:relative;background:var(--accent);overflow:hidden}
+.cover > svg,.cover > img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.share{position:absolute;top:12px;right:12px;width:38px;height:38px;border-radius:50%;border:0;background:rgba(0,0,0,.35);color:#fff;display:grid;place-items:center;cursor:pointer;backdrop-filter:blur(6px);z-index:1}
+.share svg{width:18px;height:18px}
+.page.nocover .cover{height:72px}
+.idcol{padding-bottom:4px}
+.head{padding-inline:22px;position:relative}
+.avatar{width:104px;height:104px;border-radius:50%;margin-top:-52px;border:4px solid var(--bg);background:var(--accent-soft);display:grid;place-items:center;overflow:hidden;position:relative}
+.avatar img{width:100%;height:100%;object-fit:cover}
+.avatar svg{width:100%;height:100%}
+.page.noavatar .avatar{display:none}
+.page.noavatar .ident{padding-top:18px}
+.ident{padding-top:12px;display:grid;gap:4px}
+.ident h1{margin:0;font-size:26px;line-height:1.15;letter-spacing:-.02em;font-weight:800;text-wrap:balance}
+.role{margin:0;font-weight:700;color:var(--on-soft);font-size:14.5px}
+.tagline{color:var(--muted);margin:0}
+.facts{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:8px;font-size:13.5px;color:var(--muted)}
+.facts > span{display:inline-flex;align-items:center;gap:6px}
+.facts svg{width:15px;height:15px;flex:none}
+.status b{font-weight:700}
+.status.open b,.status.open .dot{color:var(--open)} .status.closed b,.status.closed .dot{color:var(--closed)}
+.dot{width:8px;height:8px;border-radius:50%;background:currentColor;display:inline-block}
+.quick{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:20px 22px 6px}
+.qa{display:grid;justify-items:center;gap:6px;background:none;border:0;cursor:pointer;padding:0;font-size:12.5px;font-weight:600;color:var(--fg)}
+.qa span.i{width:52px;height:52px;border-radius:16px;background:var(--accent-soft);color:var(--on-soft);display:grid;place-items:center;transition:transform .15s}
+.qa:hover span.i{transform:translateY(-2px)}
+.qa svg{width:22px;height:22px}
+.save{margin:14px 22px 0;display:flex;align-items:center;justify-content:center;gap:10px;background:var(--accent);color:var(--accent-ink);border:0;border-radius:16px;padding:15px;font-weight:700;font-size:16px;cursor:pointer;width:calc(100% - 44px)}
+.save svg{width:20px;height:20px}
+.save-note{margin:8px 22px 0;text-align:center;font-size:12.5px;color:var(--muted)}
+
+/* sections */
+.sect{padding:22px 22px 0}
+.sect h2{margin:0 0 10px;font-size:12px;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);font-weight:700}
+.links{display:grid;gap:10px}
+.lk{display:grid;grid-template-columns:44px 1fr 18px;gap:12px;align-items:center;border:1px solid var(--line);border-radius:16px;padding:10px 14px 10px 10px;background:var(--bg);cursor:pointer;text-align:left;width:100%;transition:border-color .15s,transform .15s}
+.lk:hover{border-color:var(--accent);transform:translateY(-1px)}
+.lk .i{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;background:var(--soft);color:var(--fg)}
+.lk .i svg{width:22px;height:22px}
+.lk b{display:block;font-weight:700;font-size:15px}
+.lk small{display:block;color:var(--muted);font-size:13px}
+.lk .chev{color:var(--muted);display:grid}
+.lk .chev svg{width:18px;height:18px}
+.lk.feature{background:var(--accent-soft);border-color:transparent}
+.lk.feature .i{background:var(--accent);color:var(--accent-ink)}
+.socials{display:flex;gap:10px;flex-wrap:wrap}
+.so{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:99px;padding:8px 14px 8px 10px;font-weight:600;font-size:14px;cursor:pointer;background:var(--bg)}
+.so:hover{border-color:var(--accent)}
+.so svg{width:18px;height:18px}
+.about p{margin:0;max-width:62ch}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.chip{display:inline-flex;align-items:center;gap:6px;background:var(--soft);border-radius:99px;padding:6px 12px;font-size:13px;font-weight:600}
+.chip svg{width:15px;height:15px;color:var(--on-soft)}
+.hours{border:1px solid var(--line);border-radius:16px;overflow:hidden}
+.hours summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;padding:14px 16px;font-weight:600}
+.hours summary::-webkit-details-marker{display:none}
+.hours summary svg{width:18px;height:18px;transition:transform .2s;color:var(--muted)}
+.hours[open] summary svg{transform:rotate(180deg)}
+.hours ul{list-style:none;margin:0;padding:0 16px 12px;display:grid;gap:2px}
+.hours li{display:flex;justify-content:space-between;gap:10px;padding:6px 0;font-size:14px;color:var(--muted);border-top:1px solid var(--line)}
+.hours li.today{color:var(--fg);font-weight:700}
+.tiles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.tile{border-radius:14px;overflow:hidden;background:var(--soft);cursor:pointer;border:0;padding:0;text-align:left;display:flex;flex-direction:column;align-self:stretch}
+.tile .ph{width:100%}
+.tile .ph{aspect-ratio:1;display:grid;place-items:center}
+.tile .ph svg{width:46%;height:46%}
+.tile div.t{padding:8px 10px 10px}
+.tile b{display:block;font-size:13.5px;line-height:1.25}
+.tile span{font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+.loc{border:1px solid var(--line);border-radius:16px;overflow:hidden}
+.map{height:130px;background:var(--soft)}
+.map svg{width:100%;height:100%;display:block}
+.loc .body{padding:12px 16px 14px;display:flex;justify-content:space-between;gap:12px;align-items:center}
+.loc .body p{margin:0;font-size:14px}
+.loc .body small{display:block;color:var(--muted)}
+.pillbtn{border:0;background:var(--accent);color:var(--accent-ink);border-radius:99px;padding:9px 14px;font-weight:700;font-size:13.5px;cursor:pointer;white-space:nowrap}
+.areas{display:flex;flex-wrap:wrap;gap:8px}
+footer{padding:28px 22px 30px;display:grid;justify-items:center;gap:6px;text-align:center}
+.made{display:inline-flex;align-items:center;gap:8px;font-size:13px;color:var(--muted);border:1px solid var(--line);border-radius:99px;padding:6px 12px 6px 6px}
+.made svg{width:22px;height:22px}
+.made b{color:var(--fg);font-weight:800;letter-spacing:-.01em}
+footer small{color:var(--muted);font-size:12px}
+
+/* desktop */
+@media (min-width:900px){
+  .page{max-width:1080px;margin:28px auto;border-radius:28px;overflow:hidden;box-shadow:0 24px 70px rgba(0,0,0,.12),0 0 0 1px var(--line);min-height:0}
+  .cover{height:260px}
+  .page.nocover .cover{height:90px}
+  .layout{display:grid;grid-template-columns:380px minmax(0,1fr);gap:8px;align-items:start;padding:0 12px 12px}
+  .idcol{position:sticky;top:20px;padding-bottom:22px}
+  .avatar{width:132px;height:132px;margin-top:-66px}
+  .ident h1{font-size:32px}
+  .content{padding-top:18px}
+  .content .sect{padding:18px 22px 0}
+  .duo{display:grid;grid-template-columns:1fr 1fr}
+  footer{grid-column:1/-1}
+}
+
+/* toast + sheet */
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);background:var(--fg);color:var(--bg);padding:10px 16px;border-radius:12px;font-size:14px;font-weight:600;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;max-width:calc(100% - 32px);text-align:center;z-index:30}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+.sheet-bg{position:fixed;inset:0;background:rgba(0,0,0,.45);display:grid;align-items:end;justify-items:center;z-index:20}
+.sheet{background:var(--bg);width:100%;max-width:440px;border-radius:22px 22px 0 0;padding:20px 20px calc(20px + env(safe-area-inset-bottom,0px));display:grid;gap:12px}
+@media (min-width:700px){.sheet-bg{align-items:center}.sheet{border-radius:22px}}
+.sheet h3{margin:0;font-size:18px}
+.vc{display:grid;grid-template-columns:56px 1fr;gap:12px;align-items:center;background:var(--soft);border-radius:14px;padding:12px}
+.vc .av{width:56px;height:56px;border-radius:50%;background:var(--accent-soft);display:grid;place-items:center;overflow:hidden}
+.vc .av img,.vc .av svg{width:100%;height:100%;object-fit:cover}
+.vc dl{margin:0;display:grid;gap:2px;font-size:13.5px;min-width:0}
+.vc dt{font-weight:700;font-size:15px}
+.vc dd{margin:0;color:var(--muted);overflow-wrap:anywhere}
+.sheet p{margin:0;color:var(--muted);font-size:13.5px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.ghost{border:1px solid var(--line);background:var(--bg);border-radius:14px;padding:12px;font-weight:700;cursor:pointer}
+.solid{border:0;background:var(--accent);color:var(--accent-ink);border-radius:14px;padding:12px;font-weight:700;cursor:pointer}
+</style>
+
+<div class="ctrls" role="region" aria-label="Sample controls">
+  <div class="in">
+    <b class="tag">Sample controls</b>
+    <span class="seg" role="group" aria-label="Profile type"><button type="button" data-type="business" aria-pressed="true">Business</button><button type="button" data-type="personal" aria-pressed="false">Personal</button></span>
+    <label class="t"><input type="checkbox" id="c-cover" checked> Cover</label>
+    <label class="t"><input type="checkbox" id="c-avatar" checked> Profile photo</label>
+    <label class="up">Upload cover<input type="file" id="u-cover" accept="image/*"></label>
+    <label class="up">Upload photo<input type="file" id="u-avatar" accept="image/*"></label>
+    <span class="grow"></span>
+    <span id="swatches" style="display:inline-flex;gap:8px" role="group" aria-label="Brand color"></span>
+  </div>
+</div>
+
+<main class="page" id="page">
+  <div class="cover" id="cover"></div>
+  <div class="layout">
+    <aside class="idcol" id="idcol"></aside>
+    <div class="content" id="content"></div>
+    <footer>
+      <a class="made" href="#" data-say="open Tappd's website"><svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="var(--tappd)"/><circle cx="13" cy="20" r="3.4" fill="#fff"/><g fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round"><path d="M19 13.5a9 9 0 0 1 0 13"/><path d="M24.5 9a15.5 15.5 0 0 1 0 22"/></g></svg>Made with <b>tappd</b></a>
+      <small>Get your own Tap Page at tappd.ph</small>
+    </footer>
+  </div>
+</main>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<div class="sheet-bg" id="sheet" hidden>
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="sh-h">
+    <h3 id="sh-h"></h3>
+    <div class="vc"><div class="av" id="vc-av"></div><dl id="vc-dl"></dl></div>
+    <p>On the live page, this downloads a contact card that opens straight in the phone's Contacts app.</p>
+    <div class="row2"><button class="ghost" type="button" id="sh-cancel">Not now</button><button class="solid" type="button" id="sh-ok">Save contact</button></div>
+  </div>
+</div>
+
+<script>
+(function(){
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const P=d=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${d}</svg>`;
+const IC={
+  call:P('<path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/>'),
+  chat:P('<path d="M12 3C7 3 3 6.6 3 11c0 2.5 1.3 4.7 3.3 6.2V21l3.3-1.8c.8.2 1.6.3 2.4.3 5 0 9-3.6 9-8s-4-8.5-9-8.5z"/>'),
+  sms:P('<rect x="3" y="4" width="18" height="13" rx="3"/><path d="M8 21l3-4M8 10h8M8 13h5"/>'),
+  nav:P('<path d="M3 11l18-8-8 18-2-8z"/>'),
+  mail:P('<rect x="3" y="5" width="18" height="14" rx="3"/><path d="M4 7l8 6 8-6"/>'),
+  star:'<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 3l2.7 5.5 6 .9-4.4 4.2 1 6-5.3-2.8-5.3 2.8 1-6L3.3 9.4l6-.9z"/></svg>',
+  menu:P('<path d="M5 3h11l3 3v15H5z"/><path d="M8.5 9h7M8.5 12.5h7M8.5 16h4.5"/>'),
+  truck:P('<path d="M3 7h11v9H3z"/><path d="M14 10h4l3 3v3h-7"/><circle cx="7" cy="18" r="2"/><circle cx="17" cy="18" r="2"/>'),
+  cal:P('<rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/>'),
+  home:P('<path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/>'),
+  doc:P('<path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4M9 13h6M9 17h6"/>'),
+  grid:P('<rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/>'),
+  cam:P('<rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/>'),
+  like:P('<path d="M7 10v11H3V10zM7 20h9.5a2 2 0 0 0 2-1.6l1.4-6A2 2 0 0 0 18 10h-5V6a2 2 0 0 0-2-2l-4 6"/>'),
+  note:P('<path d="M9 18V6l10-2v12"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="16.5" cy="16" r="2.5"/>'),
+  people:P('<circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6M15 14.5c3 0 6 1.8 6 5"/>'),
+  brief:P('<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 13h18"/>'),
+  pin:P('<path d="M12 21s-7-6.2-7-12a7 7 0 0 1 14 0c0 5.8-7 12-7 12z"/><circle cx="12" cy="9" r="2.5"/>'),
+  check:P('<path d="M20 6L9 17l-5-5"/>'),
+  award:P('<circle cx="12" cy="9" r="6"/><path d="M8.5 14L7 21l5-3 5 3-1.5-7"/>'),
+  share:P('<path d="M12 3v12"/><path d="M7 8l5-5 5 5"/><path d="M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6"/>'),
+  save:P('<circle cx="10" cy="8" r="4"/><path d="M3 20c0-3.5 3-6 7-6s7 2.5 7 6"/><path d="M19 8v6M16 11h6"/>'),
+  chev:P('<path d="M9 6l6 6-6 6"/>'),
+  down:P('<path d="M6 9l6 6 6-6"/>')
+};
+const WINDOWS=Array.from({length:40},(_,i)=>`<rect x="${640+(i%4)*16}" y="${64+Math.floor(i/4)*18}" width="8" height="8"/>`).join("");
+const COVERS={
+  business:`<svg viewBox="0 0 1080 260" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs><pattern id="beans" width="46" height="46" patternUnits="userSpaceOnUse" patternTransform="rotate(-18)"><ellipse cx="14" cy="14" rx="7" ry="10" fill="rgba(255,255,255,.08)"/><path d="M14 5c-3 5 3 13 0 18" stroke="rgba(0,0,0,.18)" stroke-width="1.6" fill="none"/><ellipse cx="37" cy="36" rx="6" ry="9" fill="rgba(255,255,255,.06)"/></pattern><radialGradient id="glow" cx=".8" cy=".2" r=".9"><stop offset="0" stop-color="rgba(255,214,150,.45)"/><stop offset="1" stop-color="rgba(255,214,150,0)"/></radialGradient></defs><rect width="1080" height="260" fill="var(--accent)"/><rect width="1080" height="260" fill="url(#beans)"/><rect width="1080" height="260" fill="url(#glow)"/><g transform="translate(560 30)"><g fill="none" stroke="rgba(255,255,255,.55)" stroke-width="3" stroke-linecap="round"><path d="M24 70c0-10 8-10 8-20s-8-10-8-20"/><path d="M46 70c0-10 8-10 8-20s-8-10-8-20"/></g><path d="M-4 84h80v34a40 40 0 0 1-40 40 40 40 0 0 1-40-40z" fill="rgba(255,255,255,.9)"/><path d="M76 94h12a14 14 0 0 1 0 28h-13" fill="none" stroke="rgba(255,255,255,.9)" stroke-width="7"/></g></svg>`,
+  personal:`<svg viewBox="0 0 1080 260" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs><linearGradient id="sky" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="rgba(255,255,255,.08)"/><stop offset="1" stop-color="rgba(0,0,0,.35)"/></linearGradient></defs><rect width="1080" height="260" fill="var(--accent)"/><rect width="1080" height="260" fill="url(#sky)"/><g fill="rgba(255,255,255,.10)"><rect x="560" y="90" width="60" height="170"/><rect x="630" y="50" width="80" height="210"/><rect x="720" y="110" width="50" height="150"/><rect x="780" y="70" width="70" height="190"/><rect x="860" y="130" width="60" height="130"/><rect x="930" y="40" width="90" height="220"/></g><g fill="rgba(255,255,255,.18)">${WINDOWS}</g><circle cx="200" cy="-40" r="220" fill="rgba(255,255,255,.06)"/></svg>`
+};
+const AVATARS={
+  business:`<svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="24" fill="var(--accent)"/><path d="M16 21h14v6a7 7 0 0 1-7 7 7 7 0 0 1-7-7z" fill="#fff"/><path d="M30 23h2a3 3 0 0 1 0 6h-2" fill="none" stroke="#fff" stroke-width="2"/><path d="M20 18c0-2 2-2 2-4M25 18c0-2 2-2 2-4" stroke="#fff" stroke-width="1.8" fill="none" stroke-linecap="round"/></svg>`,
+  personal:`<svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="24" fill="var(--accent-soft)"/><circle cx="24" cy="19" r="8" fill="var(--accent)"/><path d="M9 42c2-9 8-13 15-13s13 4 15 13" fill="var(--accent)"/></svg>`
+};
+const FOOD=[["#e8d9c8",'<path d="M10 18h24v8a12 12 0 0 1-24 0z" fill="#fff"/><path d="M34 21h3a4 4 0 0 1 0 8h-3" fill="none" stroke="#fff" stroke-width="3"/><path d="M16 14c0-3 3-3 3-6M23 14c0-3 3-3 3-6" stroke="#fff" stroke-width="2.4" fill="none" stroke-linecap="round"/>'],
+ ["#efd9a8",'<path d="M8 30c2-10 10-16 16-16s14 6 16 16c-5 3-11 4-16 4s-11-1-16-4z" fill="#fff"/><path d="M16 22l4 8M24 18v12M32 22l-4 8" stroke="#efd9a8" stroke-width="2.4" stroke-linecap="round"/>'],
+ ["#dce3cf",'<ellipse cx="24" cy="30" rx="16" ry="8" fill="#fff"/><circle cx="24" cy="26" r="6" fill="#f4c542"/>']];
+const HOMES=[["#d9e4ee",'<path d="M8 24l16-12 16 12v14H8z" fill="#fff"/><rect x="20" y="28" width="8" height="10" fill="#d9e4ee"/>'],
+ ["#e6dfee",'<rect x="12" y="10" width="24" height="28" fill="#fff"/><g fill="#e6dfee"><rect x="16" y="14" width="5" height="5"/><rect x="27" y="14" width="5" height="5"/><rect x="16" y="23" width="5" height="5"/><rect x="27" y="23" width="5" height="5"/></g>'],
+ ["#e3eadb",'<path d="M6 26l12-9 12 9v12H6z" fill="#fff"/><path d="M26 22l8-6 8 6v16H30" fill="#fff" opacity=".8"/>']];
+
+const PROFILES={
+ business:{
+  color:"#3b2418",name:"Café Luna",first:"Café Luna",role:"",slug:"cafeluna",tagline:"Specialty coffee, pastries and all-day brunch in the heart of IT Park.",
+  facts:[{status:true},{icon:"pin",text:"IT Park, Cebu City"},{gold:true,text:"4.8 on Google"}],
+  hours:[["Sunday",8,20],["Monday",7,21],["Tuesday",7,21],["Wednesday",7,21],["Thursday",7,21],["Friday",7,22],["Saturday",8,22]],
+  statusWords:["Open now","Closed"],
+  quick:[["call","Call","call +63 917 123 4567"],["chat","Message","open a chat in Messenger"],["nav","Directions","open directions in Google Maps"],["mail","Email","email hello@cafeluna.ph"]],
+  contact:["+63 917 123 4567","hello@cafeluna.ph","Cebu IT Park, Lahug, Cebu City"],
+  sections:[
+   {type:"links",title:"Links",items:[["star","Leave us a Google review","Takes 30 seconds. It helps us a lot!",true],["menu","View our menu","Coffee, pastries and brunch"],["truck","Order for delivery","GrabFood · foodpanda"],["cal","Book a table","For groups of 6 or more"]]},
+   {type:"socials",title:"Follow us",items:[["cam","Instagram"],["like","Facebook"],["note","TikTok"],["people","Community"]]},
+   {type:"tiles",title:"Customer favorites",art:FOOD,items:[["Spanish latte","₱165"],["Butter croissant","₱120"],["Luna brunch plate","₱325"]]},
+   {type:"duo",items:[{type:"hours",title:"Opening hours"},{type:"location",title:"Find us",line:"Ground floor, Luna Building",sub:"Cebu IT Park, Lahug, Cebu City"}]}
+  ]},
+ personal:{
+  color:"#1f3a8a",name:"Andrea Villanueva",first:"Andrea",role:"Licensed Real Estate Broker",slug:"andrea",tagline:"Helping Cebu families and investors find the right home, from first viewing to turnover.",
+  facts:[{status:true},{icon:"pin",text:"Metro Cebu"},{icon:"award",text:"PRC-licensed"}],
+  hours:[["Sunday",0,0],["Monday",9,18],["Tuesday",9,18],["Wednesday",9,18],["Thursday",9,18],["Friday",9,18],["Saturday",10,16]],
+  statusWords:["Available now","Away"],
+  quick:[["call","Call","call Andrea at +63 918 234 5678"],["sms","Text","start a text message to Andrea"],["chat","Viber","open a Viber chat with Andrea"],["mail","Email","email andrea@villanuevarealty.ph"]],
+  contact:["+63 918 234 5678","andrea@villanuevarealty.ph","Villanueva Realty · Cebu City"],
+  sections:[
+   {type:"about",title:"About me",text:"I've spent 8 years matching buyers with homes and condos across Metro Cebu. I handle the paperwork, bank financing and turnover, so you can focus on picking the right place.",chips:[["award","PRC-licensed broker"],["check","8 years in real estate"],["people","120+ families helped"]]},
+   {type:"links",title:"Work with me",items:[["cal","Book a free consultation","30 minutes, online or in person",true],["home","View my current listings","Condos, house and lots, lots"],["grid","Past projects","Homes I've helped close"],["doc","Download my profile","PDF · 1 page"]]},
+   {type:"tiles",title:"Featured listings",art:HOMES,items:[["2BR townhouse, Talamban","₱6.8M"],["Studio condo, IT Park","₱3.2M"],["House & lot, Liloan","₱4.5M"]]},
+   {type:"socials",title:"Connect",items:[["brief","LinkedIn"],["like","Facebook"],["cam","Instagram"]]},
+   {type:"duo",items:[{type:"hours",title:"Availability"},{type:"areas",title:"Areas I serve",items:["Cebu City","Mandaue","Lapu-Lapu","Talisay","Consolacion","Liloan"]}]}
+  ]}
+};
+
+let type="business",custom={cover:null,avatar:null},color=null;
+const page=$("page");
+const fmtH=h=>`${h%12||12}:00 ${h>=12?"PM":"AM"}`;
+function nowCebu(){const p=new Intl.DateTimeFormat("en-US",{timeZone:"Asia/Manila",weekday:"long",hour:"numeric",minute:"numeric",hour12:false}).formatToParts(new Date());return{wd:p.find(x=>x.type==="weekday").value,t:(+p.find(x=>x.type==="hour").value%24)+(+p.find(x=>x.type==="minute").value)/60}}
+function status(pr){
+  const {wd,t}=nowCebu(),H=pr.hours,di=H.findIndex(d=>d[0]===wd),[,o,c]=H[di],open=c>o&&t>=o&&t<c;
+  let next="";
+  if(open)next=`· until ${fmtH(c)}`;
+  else if(c>o&&t<o)next=`· back at ${fmtH(o)}`;
+  else for(let k=1;k<=7;k++){const d=H[(di+k)%7];if(d[2]>d[1]){next=`· back ${k===1?"tomorrow":d[0]} ${fmtH(d[1])}`;break}}
+  return{open,di,html:`<span class="dot"></span><b>${open?pr.statusWords[0]:pr.statusWords[1]}</b><span>${esc(next)}</span>`};
+}
+const range=d=>d[2]>d[1]?`${fmtH(d[1])} – ${fmtH(d[2])}`:"Closed";
+function sectHTML(s,pr){
+  switch(s.type){
+  case"links":return `<section class="sect"><h2>${esc(s.title)}</h2><div class="links">${s.items.map(([ic,t,sub,f])=>`<button class="lk${f?" feature":""}" type="button" data-say="open “${esc(t)}”"><span class="i">${IC[ic]}</span><span><b>${esc(t)}</b><small>${esc(sub)}</small></span><span class="chev">${IC.chev}</span></button>`).join("")}</div></section>`;
+  case"socials":return `<section class="sect"><h2>${esc(s.title)}</h2><div class="socials">${s.items.map(([ic,t])=>`<button class="so" type="button" data-say="open ${esc(pr.name)} on ${esc(t)}">${IC[ic]}${esc(t)}</button>`).join("")}</div></section>`;
+  case"tiles":return `<section class="sect"><h2>${esc(s.title)}</h2><div class="tiles">${s.items.map(([t,p],i)=>`<button class="tile" type="button" data-say="open “${esc(t)}”"><div class="ph" style="background:${s.art[i][0]}"><svg viewBox="0 0 48 48" aria-hidden="true">${s.art[i][1]}</svg></div><div class="t"><b>${esc(t)}</b><span>${esc(p)}</span></div></button>`).join("")}</div></section>`;
+  case"about":return `<section class="sect about"><h2>${esc(s.title)}</h2><p>${esc(s.text)}</p><div class="chips">${s.chips.map(([ic,t])=>`<span class="chip">${IC[ic]}${esc(t)}</span>`).join("")}</div></section>`;
+  case"hours":{const st=status(pr),H=pr.hours;return `<section class="sect"><h2>${esc(s.title)}</h2><details class="hours"><summary><span>Today · ${range(H[st.di])}</span>${IC.down}</summary><ul>${[1,2,3,4,5,6,0].map(i=>`<li class="${i===st.di?"today":""}"><span>${H[i][0]}</span><span>${range(H[i])}</span></li>`).join("")}</ul></details></section>`}
+  case"location":return `<section class="sect"><h2>${esc(s.title)}</h2><div class="loc"><div class="map" aria-hidden="true"><svg viewBox="0 0 460 130" preserveAspectRatio="xMidYMid slice"><rect width="460" height="130" fill="var(--soft)"/><g stroke="var(--line)" stroke-width="10" fill="none"><path d="M-10 90L470 60"/><path d="M120 -10L160 140"/><path d="M320 -10L290 140"/></g><g stroke="var(--line)" stroke-width="4" fill="none"><path d="M-10 30L470 20"/><path d="M40 -10L60 140"/><path d="M400 -10L420 140"/></g><circle cx="230" cy="62" r="26" fill="var(--accent)" opacity=".15"/><path d="M230 72s-12-10-12-20a12 12 0 0 1 24 0c0 10-12 20-12 20z" fill="var(--accent)"/><circle cx="230" cy="52" r="4.5" fill="#fff"/></svg></div><div class="body"><p>${esc(s.line)}<small>${esc(s.sub)}</small></p><button class="pillbtn" type="button" data-say="open the location in Google Maps">Open map</button></div></div></section>`;
+  case"areas":return `<section class="sect"><h2>${esc(s.title)}</h2><div class="areas">${s.items.map(a=>`<span class="chip">${IC.pin}${esc(a)}</span>`).join("")}</div></section>`;
+  case"duo":return `<div class="duo">${s.items.map(x=>sectHTML(x,pr)).join("")}</div>`;
+  }return"";
+}
+function render(){
+  const pr=PROFILES[type],st=status(pr),open=[...document.querySelectorAll("details.hours")].some(d=>d.open);
+  $("cover").innerHTML=(custom.cover?`<img src="${custom.cover}" alt="">`:COVERS[type])+`<button class="share" type="button" id="share" aria-label="Share this page">${IC.share}</button>`;
+  const facts=pr.facts.map(f=>f.status?`<span class="status ${st.open?"open":"closed"}">${st.html}</span>`:`<span>${f.gold?`<span style="color:#e0a100" aria-hidden="true">★</span>`:IC[f.icon]}${esc(f.text)}</span>`).join("");
+  $("idcol").innerHTML=`<div class="head"><div class="avatar" id="avatar">${custom.avatar?`<img src="${custom.avatar}" alt="Profile photo">`:AVATARS[type]}</div>
+    <div class="ident"><h1>${esc(pr.name)}</h1>${pr.role?`<p class="role">${esc(pr.role)}</p>`:""}<p class="tagline">${esc(pr.tagline)}</p><div class="facts">${facts}</div></div></div>
+    <nav class="quick" aria-label="Quick actions">${pr.quick.map(([ic,l,say])=>`<button class="qa" type="button" data-say="${esc(say)}"><span class="i">${IC[ic]}</span>${esc(l)}</button>`).join("")}</nav>
+    <button class="save" type="button" id="save">${IC.save}Save contact</button>
+    <p class="save-note">Adds ${esc(pr.first)} to your phone's contacts in one tap</p>`;
+  $("content").innerHTML=pr.sections.map(s=>sectHTML(s,pr)).join("");
+  if(open)document.querySelectorAll("details.hours").forEach(d=>d.open=true);
+  $("share").addEventListener("click",share);$("save").addEventListener("click",openSheet);
+  setColor(color||pr.color);
+  document.querySelectorAll(".seg button").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.type===type)));
+}
+
+let tt;function toast(m){const t=$("toast");t.textContent=m;t.classList.add("on");clearTimeout(tt);tt=setTimeout(()=>t.classList.remove("on"),2600)}
+document.addEventListener("click",e=>{const el=e.target.closest("[data-say]");if(!el)return;e.preventDefault();toast("Sample page · This would "+el.dataset.say+".")});
+async function share(){const s=PROFILES[type].slug;try{await navigator.clipboard.writeText("https://tappd.ph/"+s);toast("Link copied: tappd.ph/"+s)}catch(e){toast("Page link: tappd.ph/"+s)}}
+const sheet=$("sheet");let lastFocus=null;
+function openSheet(){const pr=PROFILES[type];lastFocus=document.activeElement;$("sh-h").textContent=`Save ${pr.name} to your contacts?`;$("vc-av").innerHTML=$("avatar").innerHTML;
+  $("vc-dl").innerHTML=`<dt>${esc(pr.name)}</dt>${pr.role?`<dd>${esc(pr.role)}</dd>`:""}${pr.contact.map(c=>`<dd>${esc(c)}</dd>`).join("")}`;sheet.hidden=false;$("sh-ok").focus()}
+function closeSheet(){sheet.hidden=true;if(lastFocus&&lastFocus.isConnected)lastFocus.focus()}
+$("sh-cancel").addEventListener("click",closeSheet);
+$("sh-ok").addEventListener("click",()=>{const n=PROFILES[type].name;closeSheet();toast(`Sample page · On a phone, ${n} would now be in your contacts.`)});
+sheet.addEventListener("click",e=>{if(e.target===sheet)closeSheet()});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!sheet.hidden)closeSheet()});
+
+document.querySelectorAll(".seg button").forEach(b=>b.addEventListener("click",()=>{if(type===b.dataset.type)return;type=b.dataset.type;custom={cover:null,avatar:null};color=null;render()}));
+$("c-cover").addEventListener("change",e=>page.classList.toggle("nocover",!e.target.checked));
+$("c-avatar").addEventListener("change",e=>page.classList.toggle("noavatar",!e.target.checked));
+function readImg(inp,key){inp.addEventListener("change",()=>{const f=inp.files&&inp.files[0];if(!f)return;if(!f.type.startsWith("image/")){toast("Choose an image file.");return}
+  const r=new FileReader();r.onload=()=>{custom[key]=r.result;$(key==="cover"?"c-cover":"c-avatar").checked=true;page.classList.remove(key==="cover"?"nocover":"noavatar");render()};r.onerror=()=>toast("Couldn't read that image.");r.readAsDataURL(f);inp.value=""})}
+readImg($("u-cover"),"cover");readImg($("u-avatar"),"avatar");
+const COLORS=[["#3b2418","Espresso"],["#0f5f57","Teal"],["#1f3a8a","Navy"],["#8a1c3c","Wine"],["#5b3fd6","Tappd purple"]];
+const mix=(hex,t)=>{const n=parseInt(hex.slice(1),16),m=v=>Math.round(v+(255-v)*t);return`rgb(${m(n>>16)},${m((n>>8)&255)},${m(n&255)})`};
+function isDark(){const th=document.documentElement.dataset.theme;return th==="dark"||(th!=="light"&&matchMedia("(prefers-color-scheme: dark)").matches)}
+function setColor(hex){const r=document.documentElement.style;r.setProperty("--accent",hex);r.setProperty("--accent-soft",isDark()?`color-mix(in srgb, ${hex} 30%, #1a1816)`:mix(hex,.9));
+  document.querySelectorAll(".sw").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.c===hex)))}
+COLORS.forEach(([c,n])=>{const b=document.createElement("button");b.type="button";b.className="sw";b.style.background=c;b.dataset.c=c;b.setAttribute("aria-label",n);b.addEventListener("click",()=>{color=c;setColor(c)});$("swatches").appendChild(b)});
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change",()=>setColor(color||PROFILES[type].color));
+
+render();
+setInterval(()=>{const st=status(PROFILES[type]);document.querySelectorAll(".status").forEach(el=>{el.className="status "+(st.open?"open":"closed");el.innerHTML=st.html})},60000);
+})();
+</script>

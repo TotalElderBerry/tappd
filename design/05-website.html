@@ -1,0 +1,360 @@
+<title>Tappd</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: sticky nav → hero (headline left, tapping card illustration right) → how it works (3 real steps) → card menu → packages with struck-through prices → FAQ → contact band → footer */
+:root{
+  --bg:#f6f5fb; --surface:#ffffff; --fg:#17152a; --muted:#5f5b75; --line:#e2dff0; --soft:#eeebfa;
+  --brand:#5b3fd6; --brand-ink:#ffffff; --brand-deep:#2b1d74;
+  --pop:#ffd23f; --pop-ink:#241d00; --save:#157a47; --save-soft:#e3f5ea;
+  --f-display:"Bricolage Grotesque","Helvetica Neue",Arial,sans-serif;
+  --f-body:"Figtree",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#110f1c; --surface:#1a1729; --fg:#eeebf8; --muted:#a9a4c2; --line:#2d2944; --soft:#221e36;
+  --brand:#9c87ff; --brand-ink:#15112a; --brand-deep:#c9bdff; --pop:#ffd23f; --pop-ink:#241d00; --save:#6fd39a; --save-soft:#16301f; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#110f1c; --surface:#1a1729; --fg:#eeebf8; --muted:#a9a4c2; --line:#2d2944; --soft:#221e36;
+  --brand:#9c87ff; --brand-ink:#15112a; --brand-deep:#c9bdff; --pop:#ffd23f; --pop-ink:#241d00; --save:#6fd39a; --save-soft:#16301f; color-scheme:dark}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+body{background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:16px;line-height:1.55}
+a{color:inherit}
+.wrap{max-width:1120px;margin:0 auto;padding-inline:20px}
+h1,h2,h3{font-family:var(--f-display);margin:0;text-wrap:balance;letter-spacing:-.02em}
+h2{font-size:clamp(28px,4vw,40px);line-height:1.1}
+.eyebrow{font-size:13px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--brand)}
+.lead{color:var(--muted);font-size:18px;max-width:58ch}
+section{padding-block:72px}
+.sec-head{display:grid;gap:10px;margin-bottom:32px}
+
+/* nav */
+nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+nav .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:12px}
+.logo{display:inline-flex;align-items:center;gap:8px;text-decoration:none;font-family:var(--f-display);font-weight:800;font-size:26px;letter-spacing:-.03em;color:var(--fg)}
+.logo svg{width:34px;height:34px}
+.links{display:flex;gap:22px;align-items:center;font-weight:600;font-size:15px}
+.links a{text-decoration:none;color:var(--muted)}
+.links a:hover{color:var(--fg)}
+.links a.btn{color:var(--brand-ink)}
+@media (max-width:720px){.links .hide-sm{display:none}}
+.btn{display:inline-flex;align-items:center;gap:8px;font:inherit;font-weight:700;text-decoration:none;border-radius:999px;padding:12px 22px;background:var(--brand);color:var(--brand-ink);border:2px solid var(--brand);cursor:pointer;white-space:nowrap}
+.btn:hover{filter:brightness(1.08)}
+.btn.sm{padding:8px 16px;font-size:14px}
+.btn.ghost{background:transparent;color:var(--fg);border-color:var(--line)}
+a:focus-visible,.btn:focus-visible,summary:focus-visible{outline:3px solid var(--pop);outline-offset:3px}
+
+/* hero */
+.hero{padding-block:64px 56px}
+.hero .wrap{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:40px;align-items:center}
+@media (max-width:860px){.hero .wrap{grid-template-columns:minmax(0,1fr)}}
+.hero h1{font-size:clamp(40px,6.4vw,72px);line-height:1.02}
+.hero h1 em{font-style:normal;color:var(--brand)}
+.hero .lead{margin:18px 0 26px}
+.cta{display:flex;flex-wrap:wrap;gap:12px}
+.proof{margin-top:22px;display:inline-flex;align-items:center;gap:10px;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:8px 16px 8px 8px;font-weight:600;font-size:15px}
+.proof b{background:var(--pop);color:var(--pop-ink);border-radius:999px;padding:3px 10px;font-size:13px}
+.art{width:100%;max-width:460px;justify-self:center}
+.art svg{width:100%;height:auto;display:block}
+.waves path{animation:pulse 2.4s ease-out infinite;opacity:0}
+.waves path:nth-child(2){animation-delay:.25s}.waves path:nth-child(3){animation-delay:.5s}
+@keyframes pulse{0%{opacity:0}30%{opacity:1}70%{opacity:1}100%{opacity:0}}
+
+/* steps */
+.steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;counter-reset:s}
+@media (max-width:760px){.steps{grid-template-columns:minmax(0,1fr)}}
+.step{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:22px;display:grid;gap:8px;align-content:start}
+.step .n{font-family:var(--f-display);font-weight:800;font-size:15px;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:var(--soft);color:var(--brand)}
+.step h3{font-size:20px}
+.step p{margin:0;color:var(--muted)}
+
+/* card menu */
+.menu{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+@media (max-width:760px){.menu{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:460px){.menu{grid-template-columns:minmax(0,1fr)}}
+.item{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:18px;display:grid;gap:6px;align-content:start}
+.item .ic{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;background:var(--soft);color:var(--brand)}
+.item .ic svg{width:22px;height:22px}
+.item h3{font-size:18px}
+.item p{margin:0;color:var(--muted);font-size:15px}
+
+/* pricing */
+.pricing{background:var(--brand-deep);color:#fff}
+.pricing .eyebrow{color:var(--pop)}
+.pricing .lead{color:rgba(255,255,255,.8)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .pricing{background:#1f1745}}
+:root[data-theme="dark"] .pricing{background:#1f1745}
+.plans{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;align-items:stretch}
+@media (max-width:1000px){.plans{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:560px){.plans{grid-template-columns:minmax(0,1fr)}}
+.plan{position:relative;background:var(--surface);color:var(--fg);border-radius:20px;padding:24px 20px 20px;display:grid;gap:14px;align-content:start;border:2px solid transparent}
+.plan.best{border-color:var(--pop);box-shadow:0 14px 40px rgba(0,0,0,.28)}
+.flag{position:absolute;top:-14px;left:20px;background:var(--pop);color:var(--pop-ink);font-weight:800;font-size:12px;letter-spacing:.06em;text-transform:uppercase;border-radius:999px;padding:5px 12px}
+.plan h3{font-size:24px}
+.plan .qty{color:var(--muted);font-weight:600;font-size:15px;margin-top:-8px}
+.price{display:grid;gap:2px}
+.was{color:var(--muted);font-size:17px;text-decoration:line-through;text-decoration-thickness:2px;font-variant-numeric:tabular-nums}
+.now{font-family:var(--f-display);font-weight:800;font-size:40px;line-height:1;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.per{font-size:14px;color:var(--muted)}
+.chip{justify-self:start;background:var(--save-soft);color:var(--save);font-weight:700;font-size:13px;border-radius:999px;padding:4px 10px}
+.plan ul{list-style:none;margin:0;padding:0;display:grid;gap:8px;font-size:15px}
+.plan li{display:grid;grid-template-columns:18px 1fr;gap:8px}
+.plan li::before{content:"";width:16px;height:16px;margin-top:3px;border-radius:50%;background:var(--soft) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4.5 8.3l2.2 2.2 4.8-5' fill='none' stroke='%235b3fd6' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/16px no-repeat}
+.plan .btn{justify-content:center;margin-top:auto}
+.plan.best .btn{background:var(--pop);border-color:var(--pop);color:var(--pop-ink)}
+.tabs{display:inline-flex;background:rgba(255,255,255,.1);border-radius:999px;padding:4px;gap:4px;margin-bottom:22px;flex-wrap:wrap}
+.tabs button{font:inherit;font-weight:700;font-size:15px;border:0;border-radius:999px;padding:10px 18px;background:transparent;color:rgba(255,255,255,.82);cursor:pointer}
+.tabs button[aria-selected="true"]{background:#ffffff;color:#1f1745}
+.tabs button:focus-visible{outline:3px solid var(--pop);outline-offset:2px}
+.pane-note{color:rgba(255,255,255,.82);margin:0 0 26px;max-width:66ch}
+.plans.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media (max-width:900px){.plans.three{grid-template-columns:minmax(0,1fr)}}
+.sr{position:absolute;left:-9999px}
+.qty-pick{display:flex;gap:6px;margin-top:-4px}
+.qty-pick button{font:inherit;font-weight:700;width:40px;height:34px;border-radius:10px;border:1.5px solid var(--line);background:var(--bg);color:var(--fg);cursor:pointer}
+.qty-pick button[aria-pressed="true"]{background:var(--brand);border-color:var(--brand);color:var(--brand-ink)}
+.qty-pick button:focus-visible{outline:3px solid var(--pop);outline-offset:2px}
+.nudge{margin:0;font-size:14px;font-weight:600;color:var(--brand)}
+.nudge:empty{display:none}
+.fine{margin-top:22px;color:rgba(255,255,255,.75);font-size:14px;max-width:70ch}
+
+/* faq */
+.faq{display:grid;gap:10px;max-width:820px}
+details{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:4px 18px}
+summary{cursor:pointer;font-weight:700;padding:14px 0;list-style:none;display:flex;justify-content:space-between;gap:12px}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";font-family:var(--f-display);font-size:22px;line-height:1;color:var(--brand)}
+details[open] summary::after{content:"–"}
+details p{margin:0 0 16px;color:var(--muted);max-width:68ch}
+
+/* contact */
+.contact{padding-block:0 72px}
+.band{background:var(--surface);border:1px solid var(--line);border-radius:24px;padding:36px;display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:28px;align-items:center}
+@media (max-width:760px){.band{grid-template-columns:minmax(0,1fr);padding:24px}}
+.band h2{font-size:clamp(26px,3.6vw,36px)}
+.ways{display:grid;gap:10px}
+.way{display:flex;justify-content:space-between;gap:12px;align-items:center;border:1px solid var(--line);border-radius:14px;padding:12px 16px;flex-wrap:wrap}
+.way span{color:var(--muted);font-size:14px}
+.way b{font-weight:700;user-select:all;overflow-wrap:anywhere}
+footer{border-top:1px solid var(--line);padding-block:24px;color:var(--muted);font-size:14px}
+footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center}
+</style>
+
+<nav aria-label="Main">
+  <div class="wrap">
+    <a class="logo" href="#top" aria-label="Tappd home">
+      <svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="var(--brand)"/><circle cx="13" cy="20" r="3.4" fill="var(--brand-ink)"/><g fill="none" stroke="var(--brand-ink)" stroke-width="3.2" stroke-linecap="round"><path d="M19 13.5a9 9 0 0 1 0 13"/><path d="M24.5 9a15.5 15.5 0 0 1 0 22"/></g></svg>
+      tappd
+    </a>
+    <div class="links">
+      <a class="hide-sm" href="#how">How it works</a>
+      <a class="hide-sm" href="#cards">Cards</a>
+      <a href="#packages">Packages</a>
+      <a class="btn sm" href="#contact">Get Tappd</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="wrap">
+    <div>
+      <span class="eyebrow">NFC tap cards &amp; websites for local businesses · Cebu</span>
+      <h1>One tap. More reviews, <em>more followers.</em></h1>
+      <p class="lead">Tappd makes custom cards your customers tap with their phone to leave a Google review, follow your socials, or open your menu. No app, no typing, no hunting for your page. Need a website too? We build those, with cards included.</p>
+      <div class="cta"><a class="btn" href="#packages">See packages</a><a class="btn ghost" href="#how">How it works</a></div>
+      <div class="proof"><b>New</b> Café Luna just got Tappd.</div>
+    </div>
+    <div class="art" aria-hidden="true">
+      <svg viewBox="0 0 460 420">
+        <rect x="40" y="70" width="230" height="330" rx="22" fill="var(--surface)" stroke="var(--line)" stroke-width="2" transform="rotate(-8 155 235)"/>
+        <g transform="rotate(-8 155 235)">
+          <rect x="40" y="70" width="230" height="130" rx="22" fill="var(--brand)"/>
+          <rect x="40" y="170" width="230" height="30" fill="var(--brand)"/>
+          <circle cx="155" cy="112" r="24" fill="none" stroke="var(--brand-ink)" stroke-width="3" stroke-dasharray="7 6"/>
+          <text x="155" y="168" text-anchor="middle" font-family="Bricolage Grotesque, Arial" font-weight="800" font-size="24" fill="var(--brand-ink)">Review us</text>
+          <rect x="95" y="222" width="120" height="120" rx="12" fill="#fff" stroke="#e1e3e6" stroke-width="2"/>
+          <g fill="#17152a">
+            <rect x="105" y="232" width="30" height="30" rx="3"/><rect x="175" y="232" width="30" height="30" rx="3"/><rect x="105" y="302" width="30" height="30" rx="3"/>
+            <rect x="145" y="240" width="10" height="10"/><rect x="160" y="255" width="10" height="10"/><rect x="145" y="275" width="10" height="10"/><rect x="185" y="280" width="10" height="10"/><rect x="165" y="300" width="10" height="10"/><rect x="190" y="315" width="10" height="10"/><rect x="150" y="318" width="10" height="10"/><rect x="120" y="275" width="10" height="10"/>
+          </g>
+          <circle cx="112" cy="370" r="3.5" fill="var(--fg)"/>
+          <g fill="none" stroke="var(--fg)" stroke-width="3" stroke-linecap="round"><path d="M119 364a8 8 0 0 1 0 12"/><path d="M125 358a16 16 0 0 1 0 24"/></g>
+          <text x="138" y="375" font-family="Figtree, Arial" font-weight="700" font-size="14" letter-spacing="1.5" fill="var(--fg)">TAP OR SCAN</text>
+        </g>
+        <g transform="rotate(14 350 190)">
+          <rect x="290" y="60" width="130" height="250" rx="26" fill="var(--fg)"/>
+          <rect x="299" y="72" width="112" height="226" rx="19" fill="var(--bg)"/>
+          <rect x="336" y="80" width="38" height="8" rx="4" fill="var(--fg)"/>
+          <g fill="var(--pop)"><path d="M320 150l5 10 11 1.5-8 7.5 2 11-10-5.5-10 5.5 2-11-8-7.5 11-1.5z"/><path d="M355 150l5 10 11 1.5-8 7.5 2 11-10-5.5-10 5.5 2-11-8-7.5 11-1.5z"/><path d="M390 150l5 10 11 1.5-8 7.5 2 11-10-5.5-10 5.5 2-11-8-7.5 11-1.5z"/></g>
+          <rect x="315" y="200" width="80" height="10" rx="5" fill="var(--line)"/><rect x="315" y="218" width="60" height="10" rx="5" fill="var(--line)"/>
+          <rect x="315" y="248" width="80" height="26" rx="13" fill="var(--brand)"/>
+        </g>
+        <g class="waves" fill="none" stroke="var(--brand)" stroke-width="5" stroke-linecap="round">
+          <path d="M262 200a22 22 0 0 1 0 34"/><path d="M276 186a42 42 0 0 1 0 62"/><path d="M290 172a62 62 0 0 1 0 90"/>
+        </g>
+      </svg>
+    </div>
+  </div>
+</header>
+
+<section id="how">
+  <div class="wrap">
+    <div class="sec-head"><span class="eyebrow">How it works</span><h2>Set up once. Customers tap for years.</h2></div>
+    <div class="steps">
+      <div class="step"><span class="n">1</span><h3>Pick your cards</h3><p>Choose what each card does: reviews, Instagram, Facebook, TikTok, your online menu, or your business card.</p></div>
+      <div class="step"><span class="n">2</span><h3>We design and program them</h3><p>Your logo and colors on every card, with an NFC chip and a QR code that both point to your Tappd link.</p></div>
+      <div class="step"><span class="n">3</span><h3>Put them where customers are</h3><p>Counter, tables or cashier. Customers tap or scan, and it opens instantly. Change where a card goes anytime, no reprint needed.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="cards" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head"><span class="eyebrow">The cards</span><h2>One card, one job.</h2><p class="lead">Every card has NFC and a QR code, so it works on any phone. Mix and match any of these in your package.</p></div>
+    <div class="menu">
+      <div class="item"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 3l2.7 5.5 6 .9-4.4 4.2 1 6-5.3-2.8-5.3 2.8 1-6L3.3 9.4l6-.9z"/></svg></span><h3>Google review</h3><p>Opens your review page in one tap. The easiest way to grow your star rating.</p></div>
+      <div class="item"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17" cy="7" r="1" fill="currentColor"/></svg></span><h3>Instagram</h3><p>Turns walk-in customers into followers before they leave.</p></div>
+      <div class="item"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14 8h3V4h-3a4 4 0 0 0-4 4v3H7v4h3v6h4v-6h3l1-4h-4V8z"/></svg></span><h3>Facebook</h3><p>Likes and follows for your page, so promos reach them later.</p></div>
+      <div class="item"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 12a4 4 0 1 0 4 4V3c.5 2.5 2.5 4.5 5 5"/></svg></span><h3>TikTok</h3><p>Sends customers to your videos while they wait for their order.</p></div>
+      <div class="item"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3h11l3 3v15H5z"/><path d="M8.5 9h7M8.5 12.5h7M8.5 16h4.5"/></svg></span><h3>Menu online</h3><p>Opens your menu with photos and prices. Update it anytime without reprinting.</p></div>
+      <div class="item"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="3"/><circle cx="9" cy="11" r="2"/><path d="M6.5 16c.5-1.5 1.5-2 2.5-2s2 .5 2.5 2M14 10h4M14 13h3"/></svg></span><h3>Business card</h3><p>Tap to save your contact. Your name, number and links in their phone in seconds.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="pricing" id="packages">
+  <div class="wrap">
+    <div class="sec-head"><span class="eyebrow">Packages · Introductory prices</span><h2>Cards for your counter. Websites for everywhere else.</h2><p class="lead">Start with tap cards, or get a website with cards included. Launch prices are for a limited time.</p></div>
+    <div class="tabs" role="tablist" aria-label="Package type">
+      <button type="button" role="tab" id="tab-cards" aria-controls="pane-cards" aria-selected="true">Tap cards</button>
+      <button type="button" role="tab" id="tab-web" aria-controls="pane-web" aria-selected="false">Website + cards</button>
+    </div>
+    <div id="pane-cards" role="tabpanel" aria-labelledby="tab-cards">
+    <p class="pane-note">Regular price is ₱699 per card. At launch: ₱599 for one card, ₱549 each for 2 to 4, or the full 5-card kit for ₱2,500.</p>
+    <div class="plans">
+      <article class="plan">
+        <h3>First Tap</h3><div class="qty">1 card</div>
+        <div class="price"><span class="was"><span class="sr">Regular price </span>₱699</span><span class="now">₱599</span><span class="per">₱599 per card</span></div>
+        <span class="chip">Save ₱100</span>
+        <ul><li>1 custom NFC + QR card</li><li>Your logo and colors</li><li>Tappd link you can update anytime</li><li>Programmed and tested</li></ul>
+        <a class="btn ghost" href="#contact">Start with one</a>
+      </article>
+      <article class="plan">
+        <h3>Tap Pack</h3><div class="qty">2 to 4 cards</div>
+        <div class="qty-pick" role="group" aria-label="Number of cards"><button type="button" data-n="2" aria-pressed="true">2</button><button type="button" data-n="3" aria-pressed="false">3</button><button type="button" data-n="4" aria-pressed="false">4</button></div>
+        <div class="price" aria-live="polite"><span class="was"><span class="sr">Regular price </span><span id="pk-was">₱1,398</span></span><span class="now" id="pk-now">₱1,098</span><span class="per">₱549 per card</span></div>
+        <span class="chip" id="pk-save">Save ₱300</span>
+        <ul><li>2, 3 or 4 custom NFC + QR cards</li><li>Mix any, e.g. Google review + Instagram + menu</li><li>Tappd links you can update anytime</li><li>Programmed and tested</li></ul>
+        <p class="nudge" id="pk-nudge"></p>
+        <a class="btn ghost" href="#contact">Get Tap Pack</a>
+      </article>
+      <article class="plan best">
+        <span class="flag">Best deal · Intro price</span>
+        <h3>Fully Tappd</h3><div class="qty">5-card kit</div>
+        <div class="price"><span class="was"><span class="sr">Regular price </span>₱3,495</span><span class="now">₱2,500</span><span class="per">₱500 per card, our lowest</span></div>
+        <span class="chip">Save ₱995</span>
+        <ul><li>5 custom NFC + QR cards</li><li>The full counter set: reviews, 3 socials and your online menu, or your own mix</li><li>One matching design across the kit</li><li>Tappd links you can update anytime</li><li>Programmed and tested</li></ul>
+        <a class="btn" href="#contact">Get Fully Tappd</a>
+      </article>
+      <article class="plan">
+        <h3>Tappd Team</h3><div class="qty">6+ cards, branches or staff</div>
+        <div class="price"><span class="was" aria-hidden="true" style="visibility:hidden">₱0</span><span class="now" style="font-size:30px;padding-block:5px">Let's talk</span><span class="per">Custom quote</span></div>
+        <span class="chip" style="visibility:hidden" aria-hidden="true">–</span>
+        <ul><li>Staff business cards</li><li>Kits for multiple branches</li><li>Same design across every location</li><li>Bulk pricing</li></ul>
+        <a class="btn ghost" href="#contact">Ask for a quote</a>
+      </article>
+    </div>
+    <p class="fine">Prices are per order and include design, NFC programming and testing. Card stands and holders are available as add-ons.</p>
+    </div>
+
+    <div id="pane-web" role="tabpanel" aria-labelledby="tab-web" hidden>
+    <p class="pane-note">Every website package includes Tappd cards that link straight to your new site, so customers at your counter and online end up in the same place.</p>
+    <div class="plans three">
+      <article class="plan">
+        <h3>Tap Page</h3><div class="qty">1-page profile + 1 card</div>
+        <div class="price"><span class="was"><span class="sr">Regular price </span>₱1,799</span><span class="now">₱1,499</span><span class="per">then ₱499 per year to keep it live</span></div>
+        <span class="chip">Save ₱300</span>
+        <ul><li>A mobile profile page on your Tappd link: logo, about, hours, map and all your links</li><li>Tap to call, message, or save contact</li><li>1 Tappd card of your choice</li><li>Free edits to your links anytime</li><li>Hosting included for the first year</li></ul>
+        <a class="btn ghost" href="#contact">Get Tap Page</a>
+      </article>
+      <article class="plan best">
+        <span class="flag">Most popular · Intro price</span>
+        <h3>Launch Kit</h3><div class="qty">Custom landing page + 2 cards</div>
+        <div class="price"><span class="was"><span class="sr">Regular price </span>₱7,999</span><span class="now">₱5,999</span><span class="per">then ₱2,499 per year for hosting and upkeep</span></div>
+        <span class="chip">Save ₱2,000</span>
+        <ul><li>A one-page website designed for your business: hero, services or menu, gallery, reviews, map and contact</li><li>Connected to your own domain (domain fee billed at cost)</li><li>Messenger and call buttons for inquiries</li><li>Tap Pack included: 2 cards linking to your site</li><li>Up to 2 rounds of changes before launch</li><li>Hosting included for the first year</li></ul>
+        <a class="btn" href="#contact">Get Launch Kit</a>
+      </article>
+      <article class="plan">
+        <h3>Fully Online</h3><div class="qty">Up to 5-page site + 5-card kit</div>
+        <div class="price"><span class="was"><span class="sr">Regular price </span>₱17,999</span><span class="now">₱13,999</span><span class="per">then ₱3,999 per year for hosting and upkeep</span></div>
+        <span class="chip">Save ₱4,000</span>
+        <ul><li>A custom site of up to 5 pages, e.g. Home, Menu or Services, About, Gallery, Contact</li><li>Inquiry or booking form sent to your email</li><li>Google Business Profile setup or clean-up</li><li>Fully Tappd kit included: 5 matching cards</li><li>Up to 3 rounds of changes before launch</li><li>Hosting and small monthly updates for the first year</li></ul>
+        <a class="btn ghost" href="#contact">Get Fully Online</a>
+      </article>
+    </div>
+    <p class="fine">Domain names are billed separately at cost. Bigger builds like online ordering, payments or multiple branches get a custom quote under Tappd Team.</p>
+    </div>
+    <p class="fine" style="margin-top:6px">Introductory prices are for a limited time.</p>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="wrap">
+    <div class="sec-head"><span class="eyebrow">Questions</span><h2>Good to know</h2></div>
+    <div class="faq">
+      <details><summary>Do my customers need an app?</summary><p>No. Most phones read NFC on their own: iPhone XS and newer, and most Android phones with NFC turned on. Anyone else can scan the QR code with their camera.</p></details>
+      <details><summary>Can I change where a card goes later?</summary><p>Yes. Every card points to your own Tappd link, so we can switch it to a new promo, menu or page without reprinting the card.</p></details>
+      <details><summary>What do I need to send you?</summary><p>Your logo, brand colors if you have them, and the links for each card: your Google review page, social pages, or your menu. We'll handle the rest.</p></details>
+      <details><summary>What's the yearly fee on website packages for?</summary><p>It keeps your site online: hosting, security updates, and small edits like new prices, photos or hours. Your first year is included in the package price.</p></details>
+      <details><summary>Do I need my own domain?</summary><p>For Launch Kit and Fully Online, we connect your own domain, like yourcafe.ph. If you don't have one yet, we'll help you register it and bill the domain fee at cost. Tap Page lives on your Tappd link, so no domain is needed.</p></details>
+      <details><summary>How long does it take?</summary><p>We'll confirm the timeline when you order, once we've seen your design and quantity.</p></details>
+      <details><summary>Will it work on a metal counter?</summary><p>Metal can block NFC. We'll recommend a placement or a stand, and the QR code always works as a backup.</p></details>
+    </div>
+  </div>
+</section>
+
+<section class="contact" id="contact">
+  <div class="wrap">
+    <div class="band">
+      <div>
+        <span class="eyebrow">Get Tappd</span>
+        <h2>Ready for your business to get Tappd?</h2>
+        <p class="lead" style="margin-top:10px">Message us with your business name and the package you like. We'll reply with a design preview and next steps.</p>
+      </div>
+      <div class="ways">
+        <div class="way"><span>Facebook</span><b>facebook.com/tappd.ph</b></div>
+        <div class="way"><span>Email</span><b>hello@tappd.ph</b></div>
+        <div class="way"><span>Payment</span><b>GCash · Maya · Bank transfer</b></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <a class="logo" href="#top" style="font-size:20px"><svg viewBox="0 0 40 40" aria-hidden="true" style="width:26px;height:26px"><rect width="40" height="40" rx="11" fill="var(--brand)"/><circle cx="13" cy="20" r="3.4" fill="var(--brand-ink)"/><g fill="none" stroke="var(--brand-ink)" stroke-width="3.2" stroke-linecap="round"><path d="M19 13.5a9 9 0 0 1 0 13"/><path d="M24.5 9a15.5 15.5 0 0 1 0 22"/></g></svg>tappd</a>
+    <span>NFC tap cards &amp; websites · Made in Cebu</span>
+  </div>
+</footer>
+<script>
+(function(){
+  const tabs=[["tab-cards","pane-cards"],["tab-web","pane-web"]];
+  function show(id){tabs.forEach(([t,p])=>{const on=t===id;document.getElementById(t).setAttribute("aria-selected",String(on));document.getElementById(p).hidden=!on})}
+  tabs.forEach(([t])=>document.getElementById(t).addEventListener("click",()=>show(t)));
+  document.querySelector(".tabs").addEventListener("keydown",e=>{if(e.key!=="ArrowRight"&&e.key!=="ArrowLeft")return;const cur=tabs.findIndex(([t])=>document.getElementById(t).getAttribute("aria-selected")==="true");const n=tabs[(cur+(e.key==="ArrowRight"?1:tabs.length-1))%tabs.length][0];show(n);document.getElementById(n).focus()});
+  if(location.hash==="#websites")show("tab-web");
+  const peso=n=>"₱"+n.toLocaleString("en-PH");
+  function pack(n){
+    document.querySelectorAll(".qty-pick button").forEach(b=>b.setAttribute("aria-pressed",String(+b.dataset.n===n)));
+    const now=n*549,was=n*699;
+    document.getElementById("pk-now").textContent=peso(now);
+    document.getElementById("pk-was").textContent=peso(was);
+    document.getElementById("pk-save").textContent="Save "+peso(was-now);
+    document.getElementById("pk-nudge").textContent=n===4?"Add 1 more card for just ₱304 with Fully Tappd.":"";
+  }
+  document.querySelectorAll(".qty-pick button").forEach(b=>b.addEventListener("click",()=>pack(+b.dataset.n)));
+})();
+</script>

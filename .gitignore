@@ -1,0 +1,12 @@
+node_modules
+.nuxt
+.output
+.data
+.vercel
+dist
+.env*
+!.env.example
+test-results
+playwright-report
+.superpowers
+tests/e2e/**/*-snapshots
