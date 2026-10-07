@@ -46,6 +46,6 @@ describe('dashboardCounts', () => {
     await updateCard(db, a.cards[1]!.id, { active: false })
     await logTap(db, a.cards[0]!.id, { source: 'nfc', userAgent: '', at: daysAgo(2) })
     await logTap(db, a.cards[0]!.id, { source: 'nfc', userAgent: '', at: daysAgo(9) })
-    expect(await dashboardCounts(db, NOW)).toEqual({ awaitingPayment: 1, inProduction: 1, unassignedCards: 4, taps7d: 1 })
+    expect(await dashboardCounts(db, NOW)).toEqual({ awaitingPayment: 1, inProduction: 1, unassignedCards: 3, taps7d: 1 })
   })
 })

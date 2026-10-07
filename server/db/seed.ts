@@ -39,9 +39,10 @@ export async function seed(db: Db, opts: { reset: boolean; admin: { email: strin
     destination: { type: 'vcard', vcard: { fullName: 'Rico Dela Cruz', title: 'Owner', org: 'Demo Bistro', phones: ['+63 917 555 0101'], emails: ['rico@demobistro.ph'], url: '', address: 'Cebu City' } },
   })
   await updateCard(db, kit.cards[3]!.id, { destination: { type: 'url', url: 'https://tiktok.com/@demobistro' }, active: false })
-  for (const packageKey of ['first_tap', 'tap_pack', 'launch_kit', 'fully_online'] as const) {
+  for (const packageKey of ['first_tap', 'tap_pack', 'launch_kit'] as const) {
     await createOrder(db, { customerId: bistro.id, packageKey })
   }
+  await createOrder(db, { customerId: bistro.id, packageKey: 'custom_package', customPricePhp: 15000 })
   await createOrder(db, { customerId: bistro.id, packageKey: 'tappd_team', cardCount: 8, customPricePhp: 3600 })
   await createTapPage(db, { customerId: bistro.id, profileType: 'business', name: 'Draft Page' })
   return { skipped: false }

@@ -15,6 +15,8 @@ const creatingCustomer = ref(false)
 const busy = ref(false)
 
 const def = computed(() => getPackage(packageKey.value)!)
+// Card counts the Tap Pack picker offers, straight from the catalog (2–3 today)
+const packRange = computed(() => Array.from({ length: (def.value.maxCards ?? def.value.minCards) - def.value.minCards + 1 }, (_, i) => def.value.minCards + i))
 watch(packageKey, () => { cardCount.value = def.value.minCards; customPrice.value = undefined })
 
 const preview = computed(() => {
@@ -80,10 +82,10 @@ async function create() {
         </div>
         <div v-if="packageKey === 'tap_pack'" class="flex items-center gap-2">
           <Label>Cards</Label>
-          <Button v-for="n in [2, 3, 4]" :key="n" type="button" size="sm" :variant="cardCount === n ? 'default' : 'outline'" @click="cardCount = n">{{ n }}</Button>
+          <Button v-for="n in packRange" :key="n" type="button" size="sm" :variant="cardCount === n ? 'default' : 'outline'" @click="cardCount = n">{{ n }}</Button>
         </div>
         <div v-if="def.customPrice" class="flex flex-wrap gap-4">
-          <div class="grid gap-1.5"><Label for="o-count">Cards</Label><Input id="o-count" v-model.number="cardCount" type="number" :min="def.minCards" class="w-28" /></div>
+          <div v-if="def.maxCards === null" class="grid gap-1.5"><Label for="o-count">Cards</Label><Input id="o-count" v-model.number="cardCount" type="number" :min="def.minCards" class="w-28" /></div>
           <div class="grid gap-1.5"><Label for="o-price">Price (₱)</Label><Input id="o-price" v-model.number="customPrice" type="number" min="1" class="w-36" /></div>
         </div>
         <div class="grid gap-1.5"><Label for="o-notes">Notes</Label><Textarea id="o-notes" v-model="notes" rows="2" /></div>

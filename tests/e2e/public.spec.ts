@@ -43,6 +43,12 @@ test.describe('card links', () => {
   })
 })
 
+test("the marketing page's sample Tap Page link opens /cafeluna", async ({ request }) => {
+  const res = await request.get('/07-tap-page-sample.html', { maxRedirects: 0 })
+  expect(res.status()).toBe(302)
+  expect(res.headers().location).toBe('/cafeluna')
+})
+
 test.describe('tap pages', () => {
   test('published page renders with its name as title', async ({ page }) => {
     await page.goto('/cafeluna')

@@ -19,7 +19,7 @@ test('customer → order → card destination → tap is counted', async ({ requ
   const customer = await (await request.post('/api/admin/customers', { data: { name: 'E2E Flow Café' } })).json()
   const detail = await (await request.post('/api/admin/orders', { data: { customerId: customer.id, packageKey: 'tap_pack', cardCount: 3 } })).json()
   expect(detail.cards).toHaveLength(3)
-  expect(detail.order.pricePhp).toBe(1647)
+  expect(detail.order.pricePhp).toBe(1644)
 
   const card = detail.cards[0]
   const ok = await request.patch(`/api/admin/cards/${card.id}`, { data: { destination: { type: 'url', url: 'example.com/menu' } } })

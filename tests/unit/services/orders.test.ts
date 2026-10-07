@@ -10,12 +10,12 @@ let db: Db
 beforeEach(async () => { db = await createTestDb() })
 
 describe('createOrder', () => {
-  it('Fully Tappd: 5 unassigned cards in kit order, priced ₱2,500', async () => {
+  it('Fully Tappd: 4 unassigned cards in kit order, priced ₱2,000', async () => {
     const d = await makeOrder(db, 'fully_tappd')
-    expect(d.order).toMatchObject({ packageKey: 'fully_tappd', cardCount: 5, pricePhp: 2500, regularPricePhp: 3495, status: 'awaiting_payment' })
-    expect(d.cards.map(c => c.purpose)).toEqual(['google_review', 'instagram', 'facebook', 'tiktok', 'menu'])
+    expect(d.order).toMatchObject({ packageKey: 'fully_tappd', cardCount: 4, pricePhp: 2000, regularPricePhp: 2792, status: 'awaiting_payment' })
+    expect(d.cards.map(c => c.purpose)).toEqual(['google_review', 'instagram', 'facebook', 'menu'])
     expect(d.cards.every(c => c.destinationType === 'none' && isValidCode(c.code))).toBe(true)
-    expect(new Set(d.cards.map(c => c.code)).size).toBe(5)
+    expect(new Set(d.cards.map(c => c.code)).size).toBe(4)
     expect(d.cards[0]!.design.headline).toBe('Review us')
     expect(d.order.design).toEqual({ color: '#5b3fd6', logoUrl: null, fontPreset: 'bricolage' })
   })
@@ -35,10 +35,10 @@ describe('createOrder', () => {
     expect(emoji.tapPages[0]!.slug).toBe('page')
   })
 
-  it('Tap Pack prices per card and rejects 5 cards', async () => {
+  it('Tap Pack prices per card and rejects 4 cards', async () => {
     const c = await makeCustomer(db)
-    expect((await createOrder(db, { customerId: c.id, packageKey: 'tap_pack', cardCount: 3 })).order.pricePhp).toBe(1647)
-    await expect(createOrder(db, { customerId: c.id, packageKey: 'tap_pack', cardCount: 5 })).rejects.toMatchObject({ status: 400 })
+    expect((await createOrder(db, { customerId: c.id, packageKey: 'tap_pack', cardCount: 3 })).order.pricePhp).toBe(1644)
+    await expect(createOrder(db, { customerId: c.id, packageKey: 'tap_pack', cardCount: 4 })).rejects.toMatchObject({ status: 400 })
   })
 
   it('Tappd Team requires a price', async () => {

@@ -1,6 +1,6 @@
 export type PackageKey =
   | 'first_tap' | 'tap_pack' | 'fully_tappd' | 'tappd_team'
-  | 'tap_page' | 'launch_kit' | 'fully_online'
+  | 'tap_page' | 'launch_kit' | 'custom_package'
 export type PackageLine = 'cards' | 'website'
 
 export interface PackageDef {
@@ -25,22 +25,21 @@ interface PriceRule { now: (n: number) => number; was: (n: number) => number }
 
 // Mirrors design/05-website.html pricing (spec §4).
 const PRICES: Partial<Record<PackageKey, PriceRule>> = {
-  first_tap: { now: () => 599, was: () => 699 },
-  tap_pack: { now: n => 549 * n, was: n => 699 * n },
-  fully_tappd: { now: () => 2500, was: () => 3495 },
-  tap_page: { now: () => 1499, was: () => 1799 },
-  launch_kit: { now: () => 5999, was: () => 7999 },
-  fully_online: { now: () => 13999, was: () => 17999 },
+  first_tap: { now: () => 598, was: () => 698 },
+  tap_pack: { now: n => 548 * n, was: n => 698 * n },
+  fully_tappd: { now: () => 2000, was: () => 2792 },
+  tap_page: { now: () => 1498, was: () => 1798 },
+  launch_kit: { now: () => 3998, was: () => 4998 },
 }
 
 export const PACKAGES: readonly PackageDef[] = [
   { key: 'first_tap', line: 'cards', name: 'First Tap', summary: '1 card', minCards: 1, maxCards: 1, includesTapPage: false, yearlyFeePhp: null, customPrice: false },
-  { key: 'tap_pack', line: 'cards', name: 'Tap Pack', summary: '2 to 4 cards', minCards: 2, maxCards: 4, includesTapPage: false, yearlyFeePhp: null, customPrice: false },
-  { key: 'fully_tappd', line: 'cards', name: 'Fully Tappd', summary: '5-card kit', minCards: 5, maxCards: 5, includesTapPage: false, yearlyFeePhp: null, customPrice: false },
+  { key: 'tap_pack', line: 'cards', name: 'Tap Pack', summary: '2 to 3 cards', minCards: 2, maxCards: 3, includesTapPage: false, yearlyFeePhp: null, customPrice: false },
+  { key: 'fully_tappd', line: 'cards', name: 'Fully Tappd', summary: '4-card kit', minCards: 4, maxCards: 4, includesTapPage: false, yearlyFeePhp: null, customPrice: false },
   { key: 'tappd_team', line: 'cards', name: 'Tappd Team', summary: '6+ cards, branches or staff', minCards: 6, maxCards: null, includesTapPage: false, yearlyFeePhp: null, customPrice: true },
-  { key: 'tap_page', line: 'website', name: 'Tap Page', summary: '1-page profile + 1 card', minCards: 1, maxCards: 1, includesTapPage: true, yearlyFeePhp: 499, customPrice: false },
-  { key: 'launch_kit', line: 'website', name: 'Launch Kit', summary: 'Custom landing page + 2 cards', minCards: 2, maxCards: 2, includesTapPage: false, yearlyFeePhp: 2499, customPrice: false },
-  { key: 'fully_online', line: 'website', name: 'Fully Online', summary: 'Up to 5-page site + 5-card kit', minCards: 5, maxCards: 5, includesTapPage: false, yearlyFeePhp: 3999, customPrice: false },
+  { key: 'tap_page', line: 'website', name: 'Tap Page', summary: '1-page profile + 1 card', minCards: 1, maxCards: 1, includesTapPage: true, yearlyFeePhp: 998, customPrice: false },
+  { key: 'launch_kit', line: 'website', name: 'Launch Kit', summary: 'Custom landing page + 1 card', minCards: 1, maxCards: 1, includesTapPage: false, yearlyFeePhp: 998, customPrice: false },
+  { key: 'custom_package', line: 'website', name: 'Custom package', summary: 'Custom website + 1 card', minCards: 1, maxCards: 1, includesTapPage: false, yearlyFeePhp: null, customPrice: true },
 ]
 
 export const PACKAGE_KEYS = PACKAGES.map(p => p.key) as readonly PackageKey[]

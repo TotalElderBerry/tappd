@@ -34,7 +34,7 @@ function destinationLabel(c: { destinationType: string; destinationUrl: string |
   <div v-if="data" class="grid gap-6">
     <div class="flex flex-wrap items-start justify-between gap-3">
       <div>
-        <h1 class="text-2xl font-bold">{{ getPackage(data.order.packageKey)?.name }} · {{ data.order.cardCount }} {{ data.order.cardCount === 1 ? 'card' : 'cards' }}</h1>
+        <h1 class="text-2xl font-bold">{{ getPackage(data.order.packageKey)?.name ?? data.order.packageKey }} · {{ data.order.cardCount }} {{ data.order.cardCount === 1 ? 'card' : 'cards' }}</h1>
         <p class="text-muted-foreground">
           <NuxtLink :to="`/admin/customers/${data.customer.id}`" class="hover:underline">{{ data.customer.name }}</NuxtLink>
           · {{ formatPeso(data.order.pricePhp) }}<template v-if="data.order.regularPricePhp"> (regular {{ formatPeso(data.order.regularPricePhp) }})</template>

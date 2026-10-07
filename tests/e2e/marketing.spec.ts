@@ -20,7 +20,7 @@ test('marketing script runs: tabs and Tap Pack picker', async ({ page }) => {
   await expect(page.locator('#pane-web')).toBeVisible()
   await page.click('#tab-cards')
   await page.click('.qty-pick button[data-n="3"]')
-  await expect(page.locator('#pk-now')).toHaveText('₱1,647')
+  await expect(page.locator('#pk-now')).toHaveText('₱1,644')
 })
 
 test('marketing page never loads Tailwind', async ({ request }) => {

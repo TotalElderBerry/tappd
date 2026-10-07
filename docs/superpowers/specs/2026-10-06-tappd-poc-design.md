@@ -61,19 +61,19 @@ One Nuxt 4 app on Vercel. Nitro server routes handle redirects, vCards, and the 
 
 ## 4. Package catalog (hard-coded)
 
-Mirrors the pricing page. Prices in whole pesos.
+Mirrors the pricing page (updated 2026-10-07 to the new design/05). Prices in whole pesos.
 
 | Key | Line | Name | Cards | Price sold | Regular | Tap Page | Yearly fee |
 |---|---|---|---|---|---|---|---|
-| `first_tap` | cards | First Tap | 1 | 599 | 699 | no | — |
-| `tap_pack` | cards | Tap Pack | 2–4 | 549 × n | 699 × n | no | — |
-| `fully_tappd` | cards | Fully Tappd | 5 | 2,500 | 3,495 | no | — |
+| `first_tap` | cards | First Tap | 1 | 598 | 698 | no | — |
+| `tap_pack` | cards | Tap Pack | 2–3 | 548 × n | 698 × n | no | — |
+| `fully_tappd` | cards | Fully Tappd | 4 | 2,000 | 2,792 | no | — |
 | `tappd_team` | cards | Tappd Team | 6+ (admin enters) | admin enters | — | no | — |
-| `tap_page` | website | Tap Page | 1 | 1,499 | 1,799 | yes | 499 |
-| `launch_kit` | website | Launch Kit | 2 | 5,999 | 7,999 | no | 2,499 |
-| `fully_online` | website | Fully Online | 5 | 13,999 | 17,999 | no | 3,999 |
+| `tap_page` | website | Tap Page | 1 | 1,498 | 1,798 | yes | 998 |
+| `launch_kit` | website | Launch Kit | 1 | 3,998 | 4,998 | no | 998 (+ domain fee) |
+| `custom_package` | website | Custom package | 1 | admin enters | — | no | quoted with the build |
 
-Launch Kit and Fully Online websites are built outside this system; their cards use `url` destinations pointing at the customer's domain.
+Launch Kit and Custom package websites are built outside this system; their cards use `url` destinations pointing at the customer's domain.
 
 ## 5. Data model (Neon / Drizzle)
 

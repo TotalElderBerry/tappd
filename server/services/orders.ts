@@ -18,8 +18,8 @@ export interface CreateOrderInput {
 
 export interface OrderDetail { order: Order; customer: Customer; cards: Card[]; tapPages: TapPage[] }
 
-/** "Reviews, 3 socials and your online menu" — the Fully Tappd counter set, repeated for bigger orders. */
-const KIT_PURPOSES: readonly CardPurpose[] = ['google_review', 'instagram', 'facebook', 'tiktok', 'menu']
+/** The Fully Tappd counter set (Google reviews, Instagram, Facebook, menu), then TikTok, repeated for bigger orders. */
+const KIT_PURPOSES: readonly CardPurpose[] = ['google_review', 'instagram', 'facebook', 'menu', 'tiktok']
 
 export async function allocateCodes(db: Executor, n: number, generate: () => string = generateCode): Promise<string[]> {
   const codes = new Set<string>()

@@ -118,6 +118,7 @@ a:focus-visible,.btn:focus-visible,summary:focus-visible{outline:3px solid var(-
 .qty-pick button:focus-visible{outline:3px solid var(--pop);outline-offset:2px}
 .nudge{margin:0;font-size:14px;font-weight:600;color:var(--brand)}
 .nudge:empty{display:none}
+.assure{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));margin-top:30px}.assure>div{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.22);border-radius:14px;padding:14px 16px;color:#fff}.assure b{display:block;font-family:var(--f-display);margin-bottom:2px}.assure span{font-size:14px;color:rgba(255,255,255,.82)}
 .fine{margin-top:22px;color:rgba(255,255,255,.75);font-size:14px;max-width:70ch}
 
 /* faq */
@@ -204,7 +205,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;
     <div class="sec-head"><span class="eyebrow">How it works</span><h2>Set up once. Customers tap for years.</h2></div>
     <div class="steps">
       <div class="step"><span class="n">1</span><h3>Pick your cards</h3><p>Choose what each card does: reviews, Instagram, Facebook, TikTok, your online menu, or your business card.</p></div>
-      <div class="step"><span class="n">2</span><h3>We design and program them</h3><p>Your logo and colors on every card, with an NFC chip and a QR code that both point to your Tappd link.</p></div>
+      <div class="step"><span class="n">2</span><h3>We design and program them</h3><p>Your logo and colors on every card, with an NFC chip and a QR code that both open your link.</p></div>
       <div class="step"><span class="n">3</span><h3>Put them where customers are</h3><p>Counter, tables or cashier. Customers tap or scan, and it opens instantly. Change where a card goes anytime, no reprint needed.</p></div>
     </div>
   </div>
@@ -226,36 +227,36 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;
 
 <section class="pricing" id="packages">
   <div class="wrap">
-    <div class="sec-head"><span class="eyebrow">Packages · Introductory prices</span><h2>Cards for your counter. Websites for everywhere else.</h2><p class="lead">Start with tap cards, or get a website with cards included. Launch prices are for a limited time.</p></div>
+    <div class="sec-head"><span class="eyebrow">Packages · Introductory prices</span><h2>Cards for your counter. Websites for everywhere else.</h2><p class="lead">Already have your links? Get tap cards. No links yet, or want a site of your own? Get a website with a card included. Launch prices are for a limited time.</p></div>
     <div class="tabs" role="tablist" aria-label="Package type">
       <button type="button" role="tab" id="tab-cards" aria-controls="pane-cards" aria-selected="true">Tap cards</button>
       <button type="button" role="tab" id="tab-web" aria-controls="pane-web" aria-selected="false">Website + cards</button>
     </div>
     <div id="pane-cards" role="tabpanel" aria-labelledby="tab-cards">
-    <p class="pane-note">Regular price is ₱699 per card. At launch: ₱599 for one card, ₱549 each for 2 to 4, or the full 5-card kit for ₱2,500.</p>
+    <p class="pane-note">For businesses that already have their links: your Google review page, Instagram, Facebook, TikTok or online menu. Regular price is ₱698 per card. At launch: ₱598 for one card, ₱548 each for 2 or 3, or the 4-card Fully Tappd kit for ₱2,000.</p>
     <div class="plans">
       <article class="plan">
         <h3>First Tap</h3><div class="qty">1 card</div>
-        <div class="price"><span class="was"><span class="sr">Regular price </span>₱699</span><span class="now">₱599</span><span class="per">₱599 per card</span></div>
+        <div class="price"><span class="was"><span class="sr">Regular price </span>₱698</span><span class="now">₱598</span><span class="per">₱598 per card</span></div>
         <span class="chip">Save ₱100</span>
-        <ul><li>1 custom NFC + QR card</li><li>Your logo and colors</li><li>Tappd link you can update anytime</li><li>Programmed and tested</li></ul>
+        <ul><li>1 custom NFC + QR card</li><li>Your logo and colors</li><li>Opens the link you already have</li><li>Card stand or holder included</li><li>Programmed and tested</li></ul>
         <a class="btn ghost" href="#contact">Start with one</a>
       </article>
       <article class="plan">
-        <h3>Tap Pack</h3><div class="qty">2 to 4 cards</div>
-        <div class="qty-pick" role="group" aria-label="Number of cards"><button type="button" data-n="2" aria-pressed="true">2</button><button type="button" data-n="3" aria-pressed="false">3</button><button type="button" data-n="4" aria-pressed="false">4</button></div>
-        <div class="price" aria-live="polite"><span class="was"><span class="sr">Regular price </span><span id="pk-was">₱1,398</span></span><span class="now" id="pk-now">₱1,098</span><span class="per">₱549 per card</span></div>
+        <h3>Tap Pack</h3><div class="qty">2 to 3 cards</div>
+        <div class="qty-pick" role="group" aria-label="Number of cards"><button type="button" data-n="2" aria-pressed="true">2</button><button type="button" data-n="3" aria-pressed="false">3</button></div>
+        <div class="price" aria-live="polite"><span class="was"><span class="sr">Regular price </span><span id="pk-was">₱1,396</span></span><span class="now" id="pk-now">₱1,096</span><span class="per">₱548 per card</span></div>
         <span class="chip" id="pk-save">Save ₱300</span>
-        <ul><li>2, 3 or 4 custom NFC + QR cards</li><li>Mix any, e.g. Google review + Instagram + menu</li><li>Tappd links you can update anytime</li><li>Programmed and tested</li></ul>
+        <ul><li>2 or 3 custom NFC + QR cards</li><li>Mix any, e.g. Google review + Instagram + menu</li><li>Each opens a link you already have</li><li>Card stands or holders included</li><li>Programmed and tested</li></ul>
         <p class="nudge" id="pk-nudge"></p>
         <a class="btn ghost" href="#contact">Get Tap Pack</a>
       </article>
       <article class="plan best">
         <span class="flag">Best deal · Intro price</span>
-        <h3>Fully Tappd</h3><div class="qty">5-card kit</div>
-        <div class="price"><span class="was"><span class="sr">Regular price </span>₱3,495</span><span class="now">₱2,500</span><span class="per">₱500 per card, our lowest</span></div>
-        <span class="chip">Save ₱995</span>
-        <ul><li>5 custom NFC + QR cards</li><li>The full counter set: reviews, 3 socials and your online menu, or your own mix</li><li>One matching design across the kit</li><li>Tappd links you can update anytime</li><li>Programmed and tested</li></ul>
+        <h3>Fully Tappd</h3><div class="qty">4-card kit</div>
+        <div class="price"><span class="was"><span class="sr">Regular price </span>₱2,792</span><span class="now">₱2,000</span><span class="per">₱500 per card, our lowest</span></div>
+        <span class="chip">Save ₱792</span>
+        <ul><li>4 custom NFC + QR cards</li><li>The full counter set: e.g. Google reviews, Instagram, Facebook and your online menu, or your own mix</li><li>One matching design across the kit</li><li>Card stands or holders included</li><li>Programmed and tested</li></ul>
         <a class="btn" href="#contact">Get Fully Tappd</a>
       </article>
       <article class="plan">
@@ -266,36 +267,42 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;
         <a class="btn ghost" href="#contact">Ask for a quote</a>
       </article>
     </div>
-    <p class="fine">Prices are per order and include design, NFC programming and testing. Card stands and holders are available as add-ons.</p>
+    <p class="fine">Prices are per order and include design, NFC programming, testing and card stands or holders. Up to 4 cards are ready in same day to 2 days.</p>
     </div>
 
     <div id="pane-web" role="tabpanel" aria-labelledby="tab-web" hidden>
-    <p class="pane-note">Every website package includes Tappd cards that link straight to your new site, so customers at your counter and online end up in the same place.</p>
+    <p class="pane-note">For businesses that don't have links yet, or want a site of their own. Every package includes 1 card with a stand or holder, linking straight to your new page or site, so customers at your counter and online end up in the same place.</p>
     <div class="plans three">
       <article class="plan">
         <h3>Tap Page</h3><div class="qty">1-page profile + 1 card</div>
-        <div class="price"><span class="was"><span class="sr">Regular price </span>₱1,799</span><span class="now">₱1,499</span><span class="per">then ₱499 per year to keep it live</span></div>
+        <div class="price"><span class="was"><span class="sr">Regular price </span>₱1,798</span><span class="now">₱1,498</span><span class="per">then ₱998 per year for hosting, edits and security</span></div>
         <span class="chip">Save ₱300</span>
-        <ul><li>A mobile profile page on your Tappd link: logo, about, hours, map and all your links</li><li>Tap to call, message, or save contact</li><li>1 Tappd card of your choice</li><li>Free edits to your links anytime</li><li>Hosting included for the first year</li></ul>
+        <ul><li>A mobile profile page on your Tappd link: logo, about, hours, map and all your links</li><li>Tap to call, message, or save contact</li><li>1 card of your choice, with a stand or holder</li><li>Free link updates, up to 2 requests a month</li><li>Hosting included for the first year</li><li><a href="07-tap-page-sample.html" style="color:inherit;font-weight:600">See a sample Tap Page</a></li></ul>
         <a class="btn ghost" href="#contact">Get Tap Page</a>
       </article>
       <article class="plan best">
         <span class="flag">Most popular · Intro price</span>
-        <h3>Launch Kit</h3><div class="qty">Custom landing page + 2 cards</div>
-        <div class="price"><span class="was"><span class="sr">Regular price </span>₱7,999</span><span class="now">₱5,999</span><span class="per">then ₱2,499 per year for hosting and upkeep</span></div>
-        <span class="chip">Save ₱2,000</span>
-        <ul><li>A one-page website designed for your business: hero, services or menu, gallery, reviews, map and contact</li><li>Connected to your own domain (domain fee billed at cost)</li><li>Messenger and call buttons for inquiries</li><li>Tap Pack included: 2 cards linking to your site</li><li>Up to 2 rounds of changes before launch</li><li>Hosting included for the first year</li></ul>
+        <h3>Launch Kit</h3><div class="qty">Custom landing page + 1 card</div>
+        <div class="price"><span class="was"><span class="sr">Regular price </span>₱4,998</span><span class="now">₱3,998</span><span class="per">+ domain fee if you choose your own domain. Then ₱998 per year for hosting, edits and security, plus the domain fee</span></div>
+        <span class="chip">Save ₱1,000</span>
+        <ul><li>A one-page website designed for your business: hero, services or menu, gallery, reviews, map and contact</li><li>Your own domain is optional. If you choose one, its fee is added to your first-year price and to the ₱998 yearly fee after that</li><li>Messenger and call buttons for inquiries</li><li>1 card linking to your site, with a stand or holder</li><li>Up to 2 rounds of changes before launch</li><li>Hosting included for the first year, then up to 2 small edit requests a month</li><li>Extra pages quoted separately</li></ul>
         <a class="btn" href="#contact">Get Launch Kit</a>
       </article>
       <article class="plan">
-        <h3>Fully Online</h3><div class="qty">Up to 5-page site + 5-card kit</div>
-        <div class="price"><span class="was"><span class="sr">Regular price </span>₱17,999</span><span class="now">₱13,999</span><span class="per">then ₱3,999 per year for hosting and upkeep</span></div>
-        <span class="chip">Save ₱4,000</span>
-        <ul><li>A custom site of up to 5 pages, e.g. Home, Menu or Services, About, Gallery, Contact</li><li>Inquiry or booking form sent to your email</li><li>Google Business Profile setup or clean-up</li><li>Fully Tappd kit included: 5 matching cards</li><li>Up to 3 rounds of changes before launch</li><li>Hosting and small monthly updates for the first year</li></ul>
-        <a class="btn ghost" href="#contact">Get Fully Online</a>
+        <h3>Custom package</h3><div class="qty">Built around your business</div>
+        <div class="price"><span class="was" aria-hidden="true" style="visibility:hidden">₱0</span><span class="now" style="font-size:30px;padding-block:5px">Let's talk</span><span class="per">Custom quote</span></div>
+        <span class="chip" style="visibility:hidden" aria-hidden="true">–</span>
+        <ul><li>A multi-page website with the pages you need</li><li>Extras like booking, online ordering or multiple branches</li><li>1 card with a stand or holder included</li><li>Hosting and upkeep quoted with the build</li></ul>
+        <a class="btn ghost" href="#contact">Ask for a quote</a>
       </article>
     </div>
-    <p class="fine">Domain names are billed separately at cost. Bigger builds like online ordering, payments or multiple branches get a custom quote under Tappd Team.</p>
+    <p class="fine">To start, we need your logo, photos and text. Timelines depend on the package and how quickly we get them. Edits beyond the monthly limit and additional pages are quoted separately. A domain fee applies only if you choose your own domain: you pay the domain's actual price on top of the package price in the first year, and on top of the yearly fee after that. Bigger builds like online ordering, payments or multiple branches are quoted under Custom package.</p>
+    </div>
+    <div class="assure">
+      <div><b>Ready fast</b><span>Up to 4 cards: same day to 2 days. Bigger or custom jobs: we confirm the timeline when you order.</span></div>
+      <div><b>See it first</b><span>You get a design preview and approve it before anything is made.</span></div>
+      <div><b>Free replacement</b><span>If a card is defective or won't read when you get it, we replace it free.</span></div>
+      <div><b>Pickup or delivery</b><span>We confirm how you'll get your order, and any shipping fee, when you order.</span></div>
     </div>
     <p class="fine" style="margin-top:6px">Introductory prices are for a limited time.</p>
   </div>
@@ -306,11 +313,13 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;
     <div class="sec-head"><span class="eyebrow">Questions</span><h2>Good to know</h2></div>
     <div class="faq">
       <details><summary>Do my customers need an app?</summary><p>No. Most phones read NFC on their own: iPhone XS and newer, and most Android phones with NFC turned on. Anyone else can scan the QR code with their camera.</p></details>
-      <details><summary>Can I change where a card goes later?</summary><p>Yes. Every card points to your own Tappd link, so we can switch it to a new promo, menu or page without reprinting the card.</p></details>
+      <details><summary>Can I change where a card goes later?</summary><p>Tap cards open the link you give us, and the chip is locked after programming so nobody else can change it. If you'd like to change where your card goes later, choose a website package, where the card opens a page we manage for you.</p></details>
       <details><summary>What do I need to send you?</summary><p>Your logo, brand colors if you have them, and the links for each card: your Google review page, social pages, or your menu. We'll handle the rest.</p></details>
-      <details><summary>What's the yearly fee on website packages for?</summary><p>It keeps your site online: hosting, security updates, and small edits like new prices, photos or hours. Your first year is included in the package price.</p></details>
-      <details><summary>Do I need my own domain?</summary><p>For Launch Kit and Fully Online, we connect your own domain, like yourcafe.ph. If you don't have one yet, we'll help you register it and bill the domain fee at cost. Tap Page lives on your Tappd link, so no domain is needed.</p></details>
-      <details><summary>How long does it take?</summary><p>We'll confirm the timeline when you order, once we've seen your design and quantity.</p></details>
+      <details><summary>What's the yearly fee on website packages for?</summary><p>It keeps your site online: hosting, security updates, and up to 2 small edit requests a month, like new prices, photos or hours. Bigger changes are quoted first. Your first year is included in the package price.</p></details>
+      <details><summary>Do I need my own domain?</summary><p>It's optional. Launch Kit and Custom package can use your own domain, like yourcafe.ph. If you want one and don't have it yet, we'll help you register it and bill you the domain's actual price, added to your first-year price and to your yearly fee after that. Tap Page lives on your Tappd link, so no domain is needed.</p></details>
+      <details><summary>How long does it take?</summary><p>Orders of up to 4 cards are ready in same day to 2 days, once we have your logo and links. Larger orders and website packages depend on the size of the job and how quickly we get your content. We'll confirm the timeline when you order.</p></details>
+      <details><summary>What if my card is faulty?</summary><p>If a card is defective or won't read when you receive it, we replace it free. Message us and we'll sort it out.</p></details>
+      <details><summary>How do I get my order?</summary><p>We'll confirm pickup or delivery, and any shipping fee, when you order.</p></details>
       <details><summary>Will it work on a metal counter?</summary><p>Metal can block NFC. We'll recommend a placement or a stand, and the QR code always works as a backup.</p></details>
     </div>
   </div>
@@ -349,11 +358,11 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;
   const peso=n=>"₱"+n.toLocaleString("en-PH");
   function pack(n){
     document.querySelectorAll(".qty-pick button").forEach(b=>b.setAttribute("aria-pressed",String(+b.dataset.n===n)));
-    const now=n*549,was=n*699;
+    const now=n*548,was=n*698;
     document.getElementById("pk-now").textContent=peso(now);
     document.getElementById("pk-was").textContent=peso(was);
     document.getElementById("pk-save").textContent="Save "+peso(was-now);
-    document.getElementById("pk-nudge").textContent=n===4?"Add 1 more card for just ₱304 with Fully Tappd.":"";
+    document.getElementById("pk-nudge").textContent=n===3?"Add 1 more card for just ₱"+(2000-now).toLocaleString("en-PH")+" with Fully Tappd.":"";
   }
   document.querySelectorAll(".qty-pick button").forEach(b=>b.addEventListener("click",()=>pack(+b.dataset.n)));
 })();
